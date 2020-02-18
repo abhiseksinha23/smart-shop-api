@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <!-- Make site responsive on mobile/tablet -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
+
+  <title>LOWE'S INDIA</title>
+</head>
+  <body>
+<div class="container">
+  <div class="row">
+    <h1 style="text-align:center;">ADD PRODUCT!!</h1>
+    <div style="width:30%; margin:25px auto;">
+    <form  action="/product" method="POST">
+      <div class="form-group">
+        <input class="form-control" type="text" name="name" placeholder="PRODUCT'S NAME" required>
+      </div>
+      <div class="form-group">
+          <input class="form-control" type="number" name="price" placeholder="PRODUCT'S PRICE" required>
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" name="brand" placeholder="PRODUCT'S BRAND"required >
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" name="type" placeholder="PRODUCT'S TYPE" required>
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="text" name="category" placeholder="PRODUCT'S CATEGORY" required>
+      </div>
+      <div class="form-group">
+        Add Description
+      </div>
+      <div class="form-group">
+        <button  class="btn btn-lg btn-primary btn-block" name="submit">SUBMIT</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"></script>
+
+    <!-- Bootstrap JS CDN -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </body>
+</html>
