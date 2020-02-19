@@ -59,6 +59,17 @@ app.post("/addProduct", (req, res) => {
 });
 
 
+app.get("/types", (req, res) => {
+    product.distinct("type", (err, pr) => {
+        if (err) {
+            res.status(500).json({ error: err })
+            console.log(err);
+        } else {
+            res.status(200).json({ data: pr });
+        }
+    });
+});
+
 
 
 app.listen(process.env.PORT || 3000, () => {
