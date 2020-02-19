@@ -71,7 +71,7 @@ app.get("/types", (req, res) => {
 });
 
 
-app.get("/category/:type", (req, res) => {
+app.get("/:type/category", (req, res) => {
 
     let type = req.params.type.toLowerCase();
     product.distinct("category", { type: type }, (err, pr) => {
@@ -86,7 +86,7 @@ app.get("/category/:type", (req, res) => {
 });
 
 
-app.get("/brands/:category/:type", (req, res) => {
+app.get("/:type/:category/brands", (req, res) => {
 
     let type = req.params.type.toLowerCase();
     let category = req.params.category.toLowerCase();
@@ -102,7 +102,7 @@ app.get("/brands/:category/:type", (req, res) => {
 });
 
 
-app.get("/products/:brand/:category/:type", (req, res) => {
+app.get("/:type/:category/:brand/products", (req, res) => {
 
     let type = req.params.type.toLowerCase();
     let category = req.params.category.toLowerCase();
