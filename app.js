@@ -38,12 +38,12 @@ app.get("/allProducts", (req, res) => {
 
 app.post("/addProduct", (req, res) => {
     const body = (req.body);
-    console.log(body);
-    let name = body["name"];
+    // console.log(body);
+    let name = body["name"].toLowerCase();
     let price = body["price"];
-    let brand = body["brand"];
-    let type = body["type"];
-    let category = body["category"];
+    let brand = body["brand"].toLowerCase();
+    let type = body["type"].toLowerCase();
+    let category = body["category"].toLowerCase();
     let image = body["imageUrl"];
     let count = body["count"];
     let description = body["description"];
@@ -108,7 +108,7 @@ app.get("/:type/:category/:brand/products", (req, res) => {
     let category = req.params.category.toLowerCase();
     let brand = req.params.brand.toLowerCase();
 
-    product.find({ type: req.params.type, category: req.params.category, brand: req.params.brand }, (err, pr) => {
+    product.find({ type: type, category: category, brand: brand }, (err, pr) => {
         if (err) {
             res.status(500).json({ error: err })
             console.log(err);
