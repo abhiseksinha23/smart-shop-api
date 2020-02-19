@@ -96,27 +96,27 @@ app.post("/product", (req, res) => {
     let count = body["count"];
     let description = body["description"];
     let pr = { name: name, price: price, brand: brand, type: type, category: category, count: count, image: image, description: description };
-    client.connect(err => {
-        const collection = client.db("smart-shop-db").collection("product");
-        // perform actions on the collection object
-        collection.create(pr, (err, newly) => {
-            if (err) {
-                console.log(err);
-                res.status(500).json({ error: err });
-            } else {
-                res.status(200).json({ data: newly });
-            }
-        })
-        client.close();
-    });
-    // product.create(pr, (err, newly) => {
-    //     if (err) {
-    //         console.log(err);
-    //         res.status(500).json({ error: err });
-    //     } else {
-    //         res.status(200).json({ data: newly });
-    //     }
-    // })
+    // client.connect(err => {
+    //     const collection = client.db("smart-shop-db").collection("product");
+    //     // perform actions on the collection object
+    //     product.create(pr, (err, newly) => {
+    //         if (err) {
+    //             console.log(err);
+    //             res.status(500).json({ error: err });
+    //         } else {
+    //             res.status(200).json({ data: newly });
+    //         }
+    //     })
+    //     client.close();
+    // });
+    product.create(pr, (err, newly) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({ error: err });
+        } else {
+            res.status(200).json({ data: newly });
+        }
+    })
 });
 app.listen(process.env.PORT || 3000, () => {
     console.log(`server started at ${3000}`);
