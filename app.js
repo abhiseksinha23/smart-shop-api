@@ -102,7 +102,7 @@ app.get("/brands/:category/:type", (req, res) => {
 });
 
 
-app.get("products/:brand/:category/:type", (req, res) => {
+app.get("/products/:brand/:category/:type", (req, res) => {
 
     let type = req.params.type.toLowerCase();
     let category = req.params.category.toLowerCase();
