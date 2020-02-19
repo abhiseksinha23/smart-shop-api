@@ -13,44 +13,17 @@ app.use(cors());
 
 mongoose.connect("mongodb+srv://smart-shop-admin:password1234@smart-shop-db-drot2.mongodb.net/smart-shop-db?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true });
 
-const productschema = new mongoose.Schema({
-    name: String,
-    brand: String,
-    type: String,
-    category: String,
-    count: Number,
-    price: Number,
-    image: String,
-    description: String
-});
+const { productSchema } = require('./schema/product');
+const { userSchema } = require('./schema/user');
 
-const product = mongoose.model("product", productschema);
-
-
-const userschema = new mongoose.Schema({
-    name: String,
-    email: { type: String, unique: true, required: true },
-    password: String,
-    products: [{
-        productRef: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "product"
-        },
-        count: Number
-    }],
-    cart: [{
-        productRef: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "product"
-        },
-        count: Number
-    }, ],
-});
-const user = mongoose.model("user", userschema);
+const product = mongoose.model("product", productSchema);
+const user = mongoose.model("user", userSchema);
 
 app.get("/", (req, res) => {
     res.send("IT'S WORKING!! BACKEND WITH FRONTEND");
 });
+
+
 app.get("/allProducts", (req, res) => {
     product.find({}, (err, pr) => {
         if (err) {
