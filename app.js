@@ -108,7 +108,7 @@ app.get("products/:brand/:category/:type", (req, res) => {
     let category = req.params.category.toLowerCase();
     let brand = req.params.brand.toLowerCase();
 
-    product.find({ type: type, category: category, brand: brand }, (err, pr) => {
+    product.findAll({ type: type, category: category, brand: brand }, (err, pr) => {
         if (err) {
             res.status(500).json({ error: err })
             console.log(err);
