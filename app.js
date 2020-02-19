@@ -23,6 +23,7 @@ app.get("/", (req, res) => {
     res.send("IT'S WORKING!! BACKEND WITH FRONTEND");
 });
 
+//PRODUCTS URL
 
 app.get("/allProducts", (req, res) => {
     product.find({}, (err, pr) => {
@@ -119,7 +120,7 @@ app.get("/:type/:category/:brand/products", (req, res) => {
 
 });
 
-
+//USER ROUTES
 app.listen(process.env.PORT || 3000, () => {
     console.log(`server started at ${3000}`);
 });
