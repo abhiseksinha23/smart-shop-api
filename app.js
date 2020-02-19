@@ -49,9 +49,9 @@ const userschema = new mongoose.Schema({
 const user = mongoose.model("user", userschema);
 
 app.get("/", (req, res) => {
-    res.send("IT'S WORKING!!");
+    res.send("IT'S WORKING!! BACKEND WITH FRONTEND");
 });
-app.get("/product", (req, res) => {
+app.get("/allProducts", (req, res) => {
     product.find({}, (err, pr) => {
         if (err) {
             res.status(500).json({ error: err })
