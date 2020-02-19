@@ -61,10 +61,9 @@ app.get("/product", (req, res) => {
         }
     });
 });
-app.get("/product/new", (req, res) => {
-    res.render("new");
-});
-app.post("/product", (req, res) => {
+
+
+app.post("/addProduct", (req, res) => {
     const body = (req.body);
     console.log(body);
     let name = body["name"];
