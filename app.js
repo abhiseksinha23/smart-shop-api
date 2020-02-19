@@ -23,7 +23,7 @@ app.use(cors());
 //     client.close();
 // });
 
-const MongoClient = require('mongodb').MongoClient;
+//const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://smart-shop-admin:password1234@smart-shop-db-drot2.mongodb.net/test?retryWrites=true&w=majority";
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
