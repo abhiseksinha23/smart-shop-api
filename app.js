@@ -102,6 +102,24 @@ app.get("/brands/:category/:type", (req, res) => {
 });
 
 
+app.get("products/:brand/:category/:type", (req, res) => {
+
+    let type = req.params.type.toLowerCase();
+    let category = req.params.category.toLowerCase();
+    let brand = req.params.brand.toLowerCase();
+
+    product.find({ type: type, category: category, brand: brand }, (err, pr) => {
+        if (err) {
+            res.status(500).json({ error: err })
+            console.log(err);
+        } else {
+            res.status(200).json({ data: pr });
+        }
+    });
+
+});
+
+
 app.listen(process.env.PORT || 3000, () => {
     console.log(`server started at ${3000}`);
 });
