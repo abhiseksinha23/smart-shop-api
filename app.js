@@ -25,7 +25,7 @@ app.use(cors());
 
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://smart-shop-admin:password1234@smart-shop-db-drot2.mongodb.net/test?retryWrites=true&w=majority";
-
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const productschema = new mongoose.Schema({
     name: String,
@@ -44,7 +44,7 @@ const productschema = new mongoose.Schema({
 //     client.close();
 // });
 const client = new MongoClient(uri, { useNewUrlParser: true });
-//const product = mongoose.model("product", productschema);
+const product = mongoose.model("product", productschema);
 
 
 const userschema = new mongoose.Schema({
