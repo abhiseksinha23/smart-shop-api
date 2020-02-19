@@ -71,6 +71,20 @@ app.get("/types", (req, res) => {
 });
 
 
+app.get("/category/:type", (req, res) => {
+
+    let type = req.params.type.toLowerCase();
+    product.distinct("category", { type: type }, (err, pr) => {
+        if (err) {
+            res.status(500).json({ error: err })
+            console.log(err);
+        } else {
+            res.status(200).json({ data: pr });
+        }
+    });
+
+});
+
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`server started at ${3000}`);
