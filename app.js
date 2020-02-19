@@ -57,6 +57,10 @@ app.post("/addProduct", (req, res) => {
         }
     })
 });
+
+
+
+
 app.listen(process.env.PORT || 3000, () => {
     console.log(`server started at ${3000}`);
 });
