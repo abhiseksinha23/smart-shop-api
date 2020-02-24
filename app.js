@@ -20,9 +20,11 @@ const user = mongoose.model("user", userSchema);
 
 
 //////////////////////////////////////////////////////////////////
+
 app.get("/", (req, res) => {
     res.send("IT'S WORKING!! BACKEND WITH FRONTEND");
 });
+
 ////////////////////////////////////////////////////////////////
 //PRODUCTS URL
 
@@ -120,6 +122,7 @@ app.get("/:type/:category/:brand/products", (req, res) => {
     });
 
 });
+
 /////////////////////////////////////////////////////////////////////////////
 //USER ROUTES
 
@@ -136,7 +139,6 @@ app.post("/user", (req, res) => {
 });
 
 app.get("/user", (req, res) => {
-    //let userid = req.body.userId;
     user.find({}, (err, user) => {
         if (err) {
             res.status(500).json({ error: err })
@@ -148,9 +150,6 @@ app.get("/user", (req, res) => {
     });
 });
 app.post("/createUser", (req, res) => {
-    const body = (req.body);
-    console.log(body);
-    //  let name = body["name"];
     let name = req.body.name;
     let email = req.body.email;
     let userid = req.body.userId;
@@ -166,6 +165,29 @@ app.post("/createUser", (req, res) => {
         }
     })
 });
+
+///////////////////////////////////////////////////////////
+//CART ROUTES
+
+app.get("/cart", (req, res) => {
+    let userId = req.params.userId;
+    user.find({ userid: userId }, (err, user) => {
+        if (err) {
+            res.status(500).json({ error: err })
+            console.log(err);
+        } else {
+            let cartDetail = user.cart;
+            res.status(200).json({ data: cartDetail });
+        }
+    });
+});
+
+
+
+
+/////////////////////////////////////////////////////////////////////
+//CONNECTING ROUTES
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`server started at ${port}`);
