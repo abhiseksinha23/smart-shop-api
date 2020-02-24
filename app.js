@@ -172,37 +172,38 @@ app.post("/createUser", (req, res) => {
 //CART ROUTES
 
 app.post("/addtocart/:userid", (req, res) => {
-            let userid = req.params.userid;
-            let productRef = req.body.productRef;
-            let count = req.body.count;
-            let cr = { userid: userid, productRef: productRef, count: count };
-            cart.create(cr, (err, newly) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).json({ error: err });
-                } else {
-                    res.status(200).json({ data: newly });
-                }
-            });
+    let userid = req.params.userid;
+    let productRef = req.body.productRef;
+    let count = req.body.count;
+    let cr = { userid: userid, productRef: productRef, count: count };
+    cart.create(cr, (err, newly) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({ error: err });
+        } else {
+            res.status(200).json({ data: newly });
         }
-        app.get("/cart/:userid", (req, res) => {
-            cart.find({ userid: req.params.userid }, (err, item) => {
-                if (err) {
-                    res.status(500).json({ error: err })
-                    console.log(err);
-                } else {
-                    let a = { productRef: item.productRef, count: item.count };
-                    res.status(200).json({ data: a });
-                }
-            });
-        });
+    });
+});
+app.get("/cart/:userid", (req, res) => {
+    cart.find({ userid: req.params.userid }, (err, item) => {
+        if (err) {
+            res.status(500).json({ error: err })
+            console.log(err);
+        } else {
+            let a = { productRef: item.productRef, count: item.count };
+            res.status(200).json({ data: a });
+        }
+    });
+});
 
 
 
 
-        /////////////////////////////////////////////////////////////////////
-        //CONNECTING ROUTES
+/////////////////////////////////////////////////////////////////////
+//CONNECTING ROUTES
 
-        const port = process.env.PORT || 3000; app.listen(port, () => {
-            console.log(`server started at ${port}`);
-        });
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`server started at ${port}`);
+});
