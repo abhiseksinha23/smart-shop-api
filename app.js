@@ -4,7 +4,6 @@ const bodyparser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(bodyparser.urlencoded({ extended: true }));
@@ -19,10 +18,12 @@ const { userSchema } = require('./schema/user');
 const product = mongoose.model("product", productSchema);
 const user = mongoose.model("user", userSchema);
 
+
+//////////////////////////////////////////////////////////////////
 app.get("/", (req, res) => {
     res.send("IT'S WORKING!! BACKEND WITH FRONTEND");
 });
-
+////////////////////////////////////////////////////////////////
 //PRODUCTS URL
 
 app.get("/allProducts", (req, res) => {
@@ -119,8 +120,49 @@ app.get("/:type/:category/:brand/products", (req, res) => {
     });
 
 });
-
+/////////////////////////////////////////////////////////////////////////////
 //USER ROUTES
-app.listen(process.env.PORT || 3000, () => {
-    console.log(`server started at ${3000}`);
+
+app.post("/user", (req, res) => {
+    let userid = req.body.userId;
+    user.find({ userid: userid }, (err, user) => {
+        if (err) {
+            res.status(500).json({ error: err })
+            console.log(err);
+        } else {
+            res.status(200).json({ data: user });
+        }
+    });
+});
+
+app.get("/user", (req, res) => {
+    //let userid = req.body.userId;
+    user.find({}, (err, user) => {
+        if (err) {
+            res.status(500).json({ error: err })
+            console.log(err);
+        } else {
+            res.status(200).json({ data: user });
+        }
+    });
+});
+app.post("/createUser", (req, res) => {
+    let name = req.body.name;
+    let email = req.body.email;
+    let userid = req.body.userId;
+    let profilePicUrl = req.body.profilePicUrl;
+
+    let ur = { name: name, email: email, userid: userid, profilePicUrl: profilePicUrl };
+    product.create(ur, (err, newly) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({ error: err });
+        } else {
+            res.status(200).json({ data: newly });
+        }
+    })
+});
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`server started at ${port}`);
 });
