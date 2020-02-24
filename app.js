@@ -169,18 +169,18 @@ app.post("/createUser", (req, res) => {
 ///////////////////////////////////////////////////////////
 //CART ROUTES
 
-// app.post("/addtocart/:userid", (req, res) => {
-//     user.find({ userid: req.params.userid }, (err, user) => {
-//         if (err) {
-//             res.status(500).json({ error: err })
-//             console.log(err);
-//         } else {
-//             let a = { productRef: req.body.productRef, count: req.body.count };
-//             user.cart.push(a);
-//             res.status(200).json({ data: user });
-//         }
-//     });
-// });
+app.post("/addtocart/:userid", (req, res) => {
+    let a = { productRef: req.body.productRef, count: req.body.count };
+    user.find({ userid: req.params.userid }, (err, user) => {
+        if (err) {
+            res.status(500).json({ error: err })
+            console.log(err);
+        } else {
+            user.cart.push(a);
+            res.status(200).json({ data: user });
+        }
+    });
+});
 // app.get("/cart/:userId", (req, res) => {
 //     let userId = req.params.userId;
 //     user.find({ userid: userId }, (err, user) => {
