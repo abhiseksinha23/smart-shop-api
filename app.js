@@ -192,7 +192,7 @@ app.get("/cart/:userid", (req, res) => {
             console.log(err);
         } else {
             let a = { productRef: item.productRef, count: item.count };
-            res.status(200).json({ data: a });
+            res.status(200).json({ data: item });
         }
     });
 });
