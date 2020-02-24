@@ -148,8 +148,8 @@ app.get("/user", (req, res) => {
     });
 });
 app.post("/createUser", (req, res) => {
-    //  const body = (req.body);
-    // console.log(body);
+    const body = (req.body);
+    console.log(body);
     //  let name = body["name"];
     let name = req.body.name;
     let email = req.body.email;
