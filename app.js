@@ -182,7 +182,7 @@ app.get("/cart", (req, res) => {
     });
 });
 
-app.post("/updatecart", (req, res) => {
+app.post("/updatecart/:userid", (req, res) => {
     let userId = req.params.userid;
     let count = req.body.count;
     let productid = req.body.productid;
