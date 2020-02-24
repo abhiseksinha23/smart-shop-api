@@ -142,7 +142,8 @@ app.get("/user", (req, res) => {
             res.status(500).json({ error: err })
             console.log(err);
         } else {
-            res.status(200).json({ data: user });
+          res.send("it worked");
+          //  res.status(200).json({ data: user });
         }
     });
 });
