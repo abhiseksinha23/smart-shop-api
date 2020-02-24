@@ -14,10 +14,10 @@ mongoose.connect("mongodb+srv://smart-shop-admin:password1234@smart-shop-db-drot
 
 const { productSchema } = require('./schema/product');
 const { userSchema } = require('./schema/user');
-
+const { cartschema } = require('./schema/cart');
 const product = mongoose.model("product", productSchema);
 const user = mongoose.model("user", userSchema);
-
+const cart = mongoose.model("user", cartschema);
 
 //////////////////////////////////////////////////////////////////
 
@@ -170,16 +170,18 @@ app.post("/createUser", (req, res) => {
 //CART ROUTES
 
 app.post("/addtocart/:userid", (req, res) => {
-    let a = { productRef: req.body.productRef, count: req.body.count };
-    user.findOneAndUpdate({ userid: req.params.userid }, (err, us) => {
+    let userid = req.params.userid;
+    let productRef = req.body.productRef;
+    let count = req.body.count;
+    let cr = { userid: userid, productRef: productRef, count: count };
+    cart.create(cr, (err, newly) => {
         if (err) {
-            res.status(500).json({ error: err })
             console.log(err);
+            res.status(500).json({ error: err });
         } else {
-            // us.cart.push(a);
-            res.status(200).json({ data: us });
+            res.status(200).json({ data: newly });
         }
-    });
+    })
 });
 // app.get("/cart/:userId", (req, res) => {
 //     let userId = req.params.userId;
