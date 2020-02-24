@@ -170,13 +170,13 @@ app.post("/createUser", (req, res) => {
 //CART ROUTES
 
 app.post("/addtocart/:userid", (req, res) => {
-    let a = { "productRef": req.body.productRef, "count": req.body.count };
+    let a = { productRef: req.body.productRef, count: req.body.count };
     user.find({ userid: req.params.userid }, (err, user) => {
         if (err) {
             res.status(500).json({ error: err })
             console.log(err);
         } else {
-            //user.cart.push(a);
+            user.cart.push(a);
             res.status(200).json({ data: user.cart });
         }
     });
