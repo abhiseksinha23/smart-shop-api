@@ -191,8 +191,21 @@ app.get("/cart/:userid", (req, res) => {
             res.status(500).json({ error: err })
             console.log(err);
         } else {
-            let a = { productRef: item.productRef, count: item.count };
-            res.status(200).json({ data: item });
+            let a = {};
+            for (i = 0; i < item.length; i++) {
+                product.findById(item[i].productRef, (err, pr) => {
+                    if (err) {
+                        res.status(500).json({ error: err })
+                        console.log(err);
+                    } else {
+                        let b = {};
+                        b.push(pr);
+                        b.push(count);
+                        a.push(b);
+                    }
+                });
+            }
+            res.status(200).json({ data: a });
         }
     });
 });
