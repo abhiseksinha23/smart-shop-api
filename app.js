@@ -14,12 +14,8 @@ mongoose.connect("mongodb+srv://smart-shop-admin:password1234@smart-shop-db-drot
 
 const { productSchema } = require('./schema/product');
 const { userSchema } = require('./schema/user');
-const { cartSchema } = require('./schema/cart');
-const { orderSchema } = require('./schema/order');
 const product = mongoose.model("product", productSchema);
 const user = mongoose.model("user", userSchema);
-const cart = mongoose.model("cart", cartSchema);
-const order = mongoose.model("order", orderSchema);
 
 //////////////////////////////////////////////////////////////////
 
