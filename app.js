@@ -176,25 +176,25 @@ app.post("/addtocart/:userid", (req, res) => {
     let count = req.body.count;
     let cr = { userid: userid, productRef: productRef, count: count };
     cart.create(cr, (err, newly) => {
-        if (err) {
-            console.log(err);
-            res.status(500).json({ error: err });
-        } else {
-            res.status(200).json({ data: newly });
-        }
-    })
-    let a = { productRef: req.body.productRef, count: req.body.count };
-    user.find({ userid: userid }, (err, us) => {
-        if (err) {
-            console.log(err);
-            res.status(500).json({ error: err });
-        } else {
-            us.cart.push(a);
-            console.log(us);
-            console.log(a);
-            res.status(200).json({ data: us });
-        }
-    })
+            if (err) {
+                console.log(err);
+                res.status(500).json({ error: err });
+            } else {
+                res.status(200).json({ data: newly });
+            }
+        })
+        // let a = { productRef: req.body.productRef, count: req.body.count };
+        // user.find({ userid: userid }, (err, us) => {
+        //     if (err) {
+        //         console.log(err);
+        //         res.status(500).json({ error: err });
+        //     } else {
+        //         us.cart.push(a);
+        //         console.log(us);
+        //         console.log(a);
+        //         res.status(200).json({ data: us });
+        //     }
+        // })
 });
 // app.get("/cart/:userId", (req, res) => {
 //     let userId = req.params.userId;
