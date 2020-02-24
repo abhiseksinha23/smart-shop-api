@@ -15,10 +15,11 @@ mongoose.connect("mongodb+srv://smart-shop-admin:password1234@smart-shop-db-drot
 const { productSchema } = require('./schema/product');
 const { userSchema } = require('./schema/user');
 const { cartSchema } = require('./schema/cart');
+const { orderSchema } = require('./schema/order');
 const product = mongoose.model("product", productSchema);
 const user = mongoose.model("user", userSchema);
 const cart = mongoose.model("cart", cartSchema);
-
+const order = mongoose.model("cart", orderSchema);
 
 //////////////////////////////////////////////////////////////////
 
@@ -171,58 +172,37 @@ app.post("/createUser", (req, res) => {
 //CART ROUTES
 
 app.post("/addtocart/:userid", (req, res) => {
-    let userid = req.params.userid;
-    let productRef = req.body.productRef;
-    let count = req.body.count;
-    // let cr = { userid: userid, productRef: productRef, count: count };
-    // cart.create(cr, (err, newly) => {
-    //     if (err) {
-    //         console.log(err);
-    //         res.status(500).json({ error: err });
-    //     } else {
-    //         res.status(200).json({ data: newly });
-    //     }
-    // })
-    let a = { productRef: req.body.productRef, count: req.body.count };
-    user.find({ userid: userid }, (err, us) => {
-        if (err) {
-            console.log(err);
-            res.status(500).json({ error: err });
-        } else {
-            us.cart.push(a);
-            console.log(us);
-            console.log(a);
-            res.status(200).json({ data: us });
+            let userid = req.params.userid;
+            let productRef = req.body.productRef;
+            let count = req.body.count;
+            let cr = { userid: userid, productRef: productRef, count: count };
+            cart.create(cr, (err, newly) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).json({ error: err });
+                } else {
+                    res.status(200).json({ data: newly });
+                }
+            });
         }
-    })
-});
-// app.get("/cart/:userId", (req, res) => {
-//     let userId = req.params.userId;
-//     user.find({ userid: userId }, (err, user) => {
-//         if (err) {
-//             res.status(500).json({ error: err })
-//             console.log(err);
-//         } else {
-//             // let { cartDetatais } = user.cart;
-//             product.find({ user.cart }, (err, pr) => {
-//                 if (err) {
-//                     res.status(500).json({ error: err })
-//                     console.log(err);
-//                 } else {
-//                     res.status(200).json({ data: pr });
-//                 }
-//             });
-//             res.status(200).json({ data: user.cart });
-//         }
-//     });
-// });
+        app.get("/cart/:userid", (req, res) => {
+            cart.find({ userid: req.params.userid }, (err, item) => {
+                if (err) {
+                    res.status(500).json({ error: err })
+                    console.log(err);
+                } else {
+                    let a = { productRef: item.productRef, count: item.count };
+                    res.status(200).json({ data: a });
+                }
+            });
+        });
 
 
 
-/////////////////////////////////////////////////////////////////////
-//CONNECTING ROUTES
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`server started at ${port}`);
-});
+        /////////////////////////////////////////////////////////////////////
+        //CONNECTING ROUTES
+
+        const port = process.env.PORT || 3000; app.listen(port, () => {
+            console.log(`server started at ${port}`);
+        });
