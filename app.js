@@ -192,9 +192,9 @@ app.post("/updatecart/:userid", (req, res) => {
             res.status(500).json({ error: err })
             console.log(err);
         } else {
-            let cart = user.cart;
+            let { cart } = user.cart;
             //cart.push(newele);
-            res.status(200).json({ data: user });
+            res.status(200).json({ data: cart });
         }
     });
 });
