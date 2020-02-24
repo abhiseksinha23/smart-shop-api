@@ -191,7 +191,7 @@ app.get("/cart/:userid", (req, res) => {
             res.status(500).json({ error: err })
             console.log(err);
         } else {
-            let a = [];
+            let a = {};
             for (i = 0; i < item.length; i++) {
                 product.findById(item[i].productRef, (err, pr) => {
                     if (err) {
@@ -201,7 +201,7 @@ app.get("/cart/:userid", (req, res) => {
                         let b = { prod: pr, count: item[i].count };
                         // b.push(pr);
                         // b.push(item[i].count);
-                        a.push(b);
+                        a.add(b);
                     }
                 });
             }
