@@ -210,25 +210,28 @@ app.get("/:userid/cart", (req, res) => {
         } else {
             let productsInCart = [];
             let cart = us.cart;
-            cart.forEach(function(c, i) {
 
-                product.findById(c.productRef, (err, pr) => {
-                    if (err) {
-                        res.status(500).json({ error: err });
-                    } else {
-                        productsInCart.push({
-                            prod: pr,
-                            cartCount: c.count,
-                        });
+            if (cart.length === 0) {
+                res.status(200).json({ data: [] });
+            } else {
+                cart.forEach(function(c, i) {
 
-                        if (productsInCart.length === cart.length) {
-                            res.status(200).json({ data: productsInCart });
+                    product.findById(c.productRef, (err, pr) => {
+                        if (err) {
+                            res.status(500).json({ error: err });
+                        } else {
+                            productsInCart.push({
+                                prod: pr,
+                                cartCount: c.count,
+                            });
+
+                            if (productsInCart.length === cart.length) {
+                                res.status(200).json({ data: productsInCart });
+                            }
                         }
-                    }
+                    });
                 });
-            });
-
-
+            }
         }
     });
 });
@@ -269,23 +272,28 @@ app.get("/:userid/orders", (req, res) => {
         } else {
             let productsInOrder = [];
             let products = us.products;
-            products.forEach(function(p, i) {
+            if (products.length === 0) {
+                res.status(200).json({ data: [] });
+            } else {
+                products.forEach(function(p, i) {
 
-                product.findById(p.productRef, (err, pr) => {
-                    if (err) {
-                        res.status(500).json({ error: err });
-                    } else {
-                        productsInOrder.push({
-                            prod: pr,
-                            orderCount: p.count,
-                        });
+                    product.findById(p.productRef, (err, pr) => {
+                        if (err) {
+                            res.status(500).json({ error: err });
+                        } else {
+                            productsInOrder.push({
+                                prod: pr,
+                                orderCount: p.count,
+                            });
 
-                        if (productsInOrder.length === products.length) {
-                            res.status(200).json({ data: productsInOrder });
+                            if (productsInOrder.length === products.length) {
+                                res.status(200).json({ data: productsInOrder });
+                            }
                         }
-                    }
+                    });
                 });
-            });
+            }
+
         }
     });
 });
