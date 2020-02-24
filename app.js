@@ -169,7 +169,7 @@ app.post("/createUser", (req, res) => {
 ///////////////////////////////////////////////////////////
 //CART ROUTES
 
-app.get("/cart", (req, res) => {
+app.get("/cart/:userId", (req, res) => {
     let userId = req.params.userId;
     user.find({ userid: userId }, (err, user) => {
         if (err) {
@@ -193,7 +193,7 @@ app.post("/updatecart/:userid", (req, res) => {
             console.log(err);
         } else {
             let cart = user.cart;
-            cart.push(newele);
+            //cart.push(newele);
             res.status(200).json({ data: user });
         }
     });
