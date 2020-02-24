@@ -171,7 +171,7 @@ app.post("/createUser", (req, res) => {
 
 app.post("/addtocart/:userid", (req, res) => {
     let a = { productRef: req.body.productRef, count: req.body.count };
-    user.findOneAndModify({ userid: req.params.userid }, (err, us) => {
+    user.findOneAndUpdate({ userid: req.params.userid }, (err, us) => {
         if (err) {
             res.status(500).json({ error: err })
             console.log(err);
