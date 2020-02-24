@@ -297,7 +297,12 @@ app.get("/:userid/orders", (req, res) => {
         }
     });
 });
+////////////////////////////////////////////////////////////////////
+//ALL IN ONE
 
+app.get("*", (req, res) => {
+    res.render("WRONG ROUTE IS BEING CALLED");
+});
 /////////////////////////////////////////////////////////////////////
 //CONNECTING ROUTES
 
