@@ -176,15 +176,22 @@ app.post("/addtocart/:userid", (req, res) => {
     let productRef = req.body.productRef;
     let count = req.body.count;
     let cr = { productRef: productRef, count: count };
-    user.find({ userid: userid }, (err, us) => {
+    user.findOne({ userid: userid }, (err, us) => {
         if (err) {
             console.log(err);
             res.status(500).json({ error: err });
         } else {
             // const userCart = [us.cart];
-            us[0].cart.push(cr);
-            console.log(us[0].cart);
-            us.save();
+            us.cart.push(cr);
+            //console.log(us[0].cart);
+            us.save((err, u) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(u);
+                }
+            });
+            //console.log(us);
             res.status(200).json({ data: us });
         }
     });
