@@ -17,7 +17,7 @@ const { userSchema } = require('./schema/user');
 const { cartschema } = require('./schema/cart');
 const product = mongoose.model("product", productSchema);
 const user = mongoose.model("user", userSchema);
-const cart = mongoose.model("user", cartschema);
+const cart = mongoose.model("cart", cartschema);
 
 //////////////////////////////////////////////////////////////////
 
@@ -169,20 +169,20 @@ app.post("/createUser", (req, res) => {
 ///////////////////////////////////////////////////////////
 //CART ROUTES
 
-// app.post("/addtocart/:userid", (req, res) => {
-//     let userid = req.params.userid;
-//     let productRef = req.body.productRef;
-//     let count = req.body.count;
-//     let cr = { userid: userid, productRef: productRef, count: count };
-//     cart.create(cr, (err, newly) => {
-//         if (err) {
-//             console.log(err);
-//             res.status(500).json({ error: err });
-//         } else {
-//             res.status(200).json({ data: newly });
-//         }
-//     })
-// });
+app.post("/addtocart/:userid", (req, res) => {
+    let userid = req.params.userid;
+    let productRef = req.body.productRef;
+    let count = req.body.count;
+    let cr = { userid: userid, productRef: productRef, count: count };
+    cart.create(cr, (err, newly) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({ error: err });
+        } else {
+            res.status(200).json({ data: newly });
+        }
+    })
+});
 // app.get("/cart/:userId", (req, res) => {
 //     let userId = req.params.userId;
 //     user.find({ userid: userId }, (err, user) => {
