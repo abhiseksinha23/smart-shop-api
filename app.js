@@ -182,7 +182,22 @@ app.get("/cart", (req, res) => {
     });
 });
 
-
+app.post("/updatecart", (req, res) => {
+    let userId = req.params.userid;
+    let count = req.body.count;
+    let productid = req.body.productid;
+    let newele = { productRef: productid, count: count };
+    user.find({ userid: userId }, (err, user) => {
+        if (err) {
+            res.status(500).json({ error: err })
+            console.log(err);
+        } else {
+            let cart = user.cart;
+            cart.push(newele);
+            res.status(200).json({ data: cart });
+        }
+    });
+});
 
 
 /////////////////////////////////////////////////////////////////////
