@@ -176,8 +176,8 @@ app.get("/cart/:userId", (req, res) => {
             res.status(500).json({ error: err })
             console.log(err);
         } else {
-            let cartDetail = user.cart;
-            res.status(200).json({ data: user });
+            let cartDetail = user["cart"];
+            res.status(200).json({ data: cartDetail });
         }
     });
 });
