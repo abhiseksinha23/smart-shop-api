@@ -176,8 +176,8 @@ app.post("/addtocart/:userid", (req, res) => {
             res.status(500).json({ error: err })
             console.log(err);
         } else {
-            user['cart'].add(a);
-            res.status(200).json({ data: user });
+            // user['cart'].add(a);
+            res.status(200).json({ data: a });
         }
     });
 });
