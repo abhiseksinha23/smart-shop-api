@@ -37,6 +37,17 @@ app.get("/allProducts", (req, res) => {
     });
 });
 
+app.get("/product/:id", (req, res) => {
+    product.findById(req.params.id, (err, pr) => {
+        if (err) {
+            res.status(500).json({ error: err })
+            console.log(err);
+        } else {
+            console.log(pr);
+            res.status(200).json({ data: pr });
+        }
+    });
+});
 
 app.post("/addProduct", (req, res) => {
     const body = (req.body);
@@ -167,7 +178,7 @@ app.post("/createUser", (req, res) => {
 ///////////////////////////////////////////////////////////
 //CART ROUTES
 
-app.post("/addtocart/:userid", (req, res) => {
+app.post("/:userid/addtocart", (req, res) => {
     let userid = req.params.userid;
     let productRef = req.body.productRef;
     let count = req.body.count;
@@ -177,9 +188,7 @@ app.post("/addtocart/:userid", (req, res) => {
             console.log(err);
             res.status(500).json({ error: err });
         } else {
-            // const userCart = [us.cart];
             us.cart.push(cr);
-            //console.log(us[0].cart);
             us.save((err, u) => {
                 if (err) {
                     console.log(err);
@@ -187,46 +196,99 @@ app.post("/addtocart/:userid", (req, res) => {
                     console.log(u);
                 }
             });
-            //console.log(us);
             res.status(200).json({ data: us });
         }
     });
-    // cart.create(cr, (err, newly) => {
-    //     if (err) {
-    //         console.log(err);
-    //         res.status(500).json({ error: err });
-    //     } else {
-    //         res.status(200).json({ data: newly });
-    //     }
-    // });
 });
-app.get("/cart/:userid", (req, res) => {
-    cart.find({ userid: req.params.userid }, (err, item) => {
+
+app.get("/:userid/cart", (req, res) => {
+    let userid = req.params.userid;
+    user.findOne({ userid: userid }, (err, us) => {
         if (err) {
-            res.status(500).json({ error: err })
             console.log(err);
+            res.status(500).json({ error: err });
         } else {
-            let a = [];
-            for (i = 0; i < item.length; i++) {
-                product.findById(item[i].productRef, (err, pr) => {
+            let productsInCart = [];
+            let cart = us.cart;
+            cart.forEach(function(c, i) {
+
+                product.findById(c.productRef, (err, pr) => {
                     if (err) {
-                        res.status(500).json({ error: err })
-                        console.log(err);
+                        res.status(500).json({ error: err });
                     } else {
-                        let b = { "prod": pr, "count": item[i].count };
-                        // b.push(pr);
-                        // b.push(item[i].count);
-                        a.insert(b);
+                        productsInCart.push({
+                            prod: pr,
+                            cartCount: c.count,
+                        });
+
+                        if (productsInCart.length === cart.length) {
+                            res.status(200).json({ data: productsInCart });
+                        }
                     }
                 });
-            }
-            res.status(200).json({ data: item });
+            });
+
+
+        }
+    });
+});
+///////////////////////////////////////////////////////////////////////
+//PRODUCT ROUTES
+
+app.post("/:userid/order", (req, res) => {
+    let userid = req.params.userid;
+    let productRef = req.body.productRef;
+    let count = req.body.count;
+    let cr = { productRef: productRef, count: count };
+    user.findOne({ userid: userid }, (err, us) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({ error: err });
+        } else {
+            us.products.push(cr);
+            us.save((err, u) => {
+                if (err) {
+                    res.status(500).json({ error: err });
+                } else {
+                    console.log(u);
+                }
+            });
+            res.status(200).json({ data: us });
         }
     });
 });
 
 
 
+app.get("/:userid/orders", (req, res) => {
+    let userid = req.params.userid;
+    user.findOne({ userid: userid }, (err, us) => {
+        if (err) {
+            console.log(err);
+            res.status(500).json({ error: err });
+        } else {
+            let productsInOrder = [];
+            let products = us.products;
+            products.forEach(function(p, i) {
+
+                product.findById(p.productRef, (err, pr) => {
+                    if (err) {
+                        res.status(500).json({ error: err });
+                    } else {
+                        productsInOrder.push({
+                            prod: pr,
+                            orderCount: p.count,
+                        });
+
+                        if (productsInOrder.length === products.length) {
+                            res.status(200).json({ data: productsInOrder });
+                        }
+                    }
+                });
+            });
+        }
+    });
+});
 
 /////////////////////////////////////////////////////////////////////
 //CONNECTING ROUTES
