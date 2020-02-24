@@ -175,15 +175,27 @@ app.post("/addtocart/:userid", (req, res) => {
     let userid = req.params.userid;
     let productRef = req.body.productRef;
     let count = req.body.count;
-    let cr = { userid: userid, productRef: productRef, count: count };
-    cart.create(cr, (err, newly) => {
+    let cr = { productRef: productRef, count: count };
+    user.find({ userid: userid }, (err, us) => {
         if (err) {
             console.log(err);
             res.status(500).json({ error: err });
         } else {
-            res.status(200).json({ data: newly });
+            // const userCart = [us.cart];
+            us[0].cart.push(cr);
+            console.log(us[0].cart);
+            us.save();
+            res.status(200).json({ data: us });
         }
     });
+    // cart.create(cr, (err, newly) => {
+    //     if (err) {
+    //         console.log(err);
+    //         res.status(500).json({ error: err });
+    //     } else {
+    //         res.status(200).json({ data: newly });
+    //     }
+    // });
 });
 app.get("/cart/:userid", (req, res) => {
     cart.find({ userid: req.params.userid }, (err, item) => {
@@ -191,20 +203,20 @@ app.get("/cart/:userid", (req, res) => {
             res.status(500).json({ error: err })
             console.log(err);
         } else {
-            // let a = {};
-            // for (i = 0; i < item.length; i++) {
-            //     product.findById(item[i].productRef, (err, pr) => {
-            //         if (err) {
-            //             res.status(500).json({ error: err })
-            //             console.log(err);
-            //         } else {
-            //             let b = { "prod": pr, "count": item[i].count };
-            //             // b.push(pr);
-            //             // b.push(item[i].count);
-            //             a.insert(b);
-            //         }
-            //     });
-            // }
+            let a = [];
+            for (i = 0; i < item.length; i++) {
+                product.findById(item[i].productRef, (err, pr) => {
+                    if (err) {
+                        res.status(500).json({ error: err })
+                        console.log(err);
+                    } else {
+                        let b = { "prod": pr, "count": item[i].count };
+                        // b.push(pr);
+                        // b.push(item[i].count);
+                        a.insert(b);
+                    }
+                });
+            }
             res.status(200).json({ data: item });
         }
     });
