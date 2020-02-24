@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
-const cartschema = new mongoose.Schema({
+const cartSchema = new mongoose.Schema({
     userid: String,
     productRef: String,
     count: number
 });
 
 module.exports = {
-    cartschema: cartschema,
+    cartSchema: cartSchema,
 }
