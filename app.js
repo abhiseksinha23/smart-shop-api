@@ -194,7 +194,7 @@ app.post("/updatecart/:userid", (req, res) => {
         } else {
             let cart = user.cart;
             cart.push(newele);
-            res.status(200).json({ data: cart });
+            res.status(200).json({ data: user });
         }
     });
 });
