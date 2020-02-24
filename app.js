@@ -19,7 +19,7 @@ const { orderSchema } = require('./schema/order');
 const product = mongoose.model("product", productSchema);
 const user = mongoose.model("user", userSchema);
 const cart = mongoose.model("cart", cartSchema);
-const order = mongoose.model("cart", orderSchema);
+const order = mongoose.model("order", orderSchema);
 
 //////////////////////////////////////////////////////////////////
 
