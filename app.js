@@ -176,7 +176,10 @@ app.post("/addtocart/:userid", (req, res) => {
             res.status(500).json({ error: err })
             console.log(err);
         } else {
-            // user.cart.push(a);
+            user.cart.push({
+                productRef: req.body.productRef,
+                count: req.body.count
+            });
             res.status(200).json({ data: user });
         }
     });
