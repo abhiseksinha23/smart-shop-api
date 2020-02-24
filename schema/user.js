@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
             ref: "product"
         },
         count: { type: Number, default: 0 }
-    }, ],
+    }],
 });
 
 module.exports = {
