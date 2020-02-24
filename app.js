@@ -148,13 +148,16 @@ app.get("/user", (req, res) => {
     });
 });
 app.post("/createUser", (req, res) => {
+    //  const body = (req.body);
+    // console.log(body);
+    //  let name = body["name"];
     let name = req.body.name;
     let email = req.body.email;
     let userid = req.body.userId;
     let profilePicUrl = req.body.profilePicUrl;
 
     let ur = { name: name, email: email, userid: userid, profilePicUrl: profilePicUrl };
-    product.create(ur, (err, newly) => {
+    user.create(ur, (err, newly) => {
         if (err) {
             console.log(err);
             res.status(500).json({ error: err });
