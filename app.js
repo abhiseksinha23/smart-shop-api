@@ -169,6 +169,18 @@ app.post("/createUser", (req, res) => {
 ///////////////////////////////////////////////////////////
 //CART ROUTES
 
+app.post("/addtocart/:userid", (req, res) => {
+    user.find({ userid: req.params.userid }, (err, user) => {
+        if (err) {
+            res.status(500).json({ error: err })
+            console.log(err);
+        } else {
+            let a = { productRef: req.body.productRef, count: req.body.count };
+            user.cart.push(a);
+            res.status(200).json({ data: user });
+        }
+    });
+});
 app.get("/cart/:userId", (req, res) => {
     let userId = req.params.userId;
     user.find({ userid: userId }, (err, user) => {
@@ -177,27 +189,19 @@ app.get("/cart/:userId", (req, res) => {
             console.log(err);
         } else {
             // let { cartDetatais } = user.cart;
+            product.find({ user.cart }, (err, pr) => {
+                if (err) {
+                    res.status(500).json({ error: err })
+                    console.log(err);
+                } else {
+                    res.status(200).json({ data: pr });
+                }
+            });
             res.status(200).json({ data: user.cart });
         }
     });
 });
 
-app.post("/updatecart/:userid", (req, res) => {
-    let userId = req.params.userid;
-    let count = req.body.count;
-    let productid = req.body.productid;
-    let newele = { productRef: productid, count: count };
-    user.find({ userid: userId }, (err, user) => {
-        if (err) {
-            res.status(500).json({ error: err })
-            console.log(err);
-        } else {
-            let { cart } = user.cart;
-            //cart.push(newele);
-            res.status(200).json({ data: cart });
-        }
-    });
-});
 
 
 /////////////////////////////////////////////////////////////////////
