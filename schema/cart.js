@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cartSchema = new mongoose.Schema({
     userid: String,
     productRef: String,
-    count: number
+    count: Number
 });
 
 module.exports = {
