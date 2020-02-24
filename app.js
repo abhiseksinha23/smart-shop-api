@@ -198,7 +198,7 @@ app.get("/cart/:userid", (req, res) => {
                         res.status(500).json({ error: err })
                         console.log(err);
                     } else {
-                        let b = { prod: pr, count: item[i].count };
+                        let b = { "prod": pr, "count": item[i].count };
                         // b.push(pr);
                         // b.push(item[i].count);
                         a.insert(b);
