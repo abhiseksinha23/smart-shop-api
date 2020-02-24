@@ -201,7 +201,7 @@ app.get("/cart/:userid", (req, res) => {
                         let b = { prod: pr, count: item[i].count };
                         // b.push(pr);
                         // b.push(item[i].count);
-                        a.push(b);
+                        a.insert(b);
                     }
                 });
             }
