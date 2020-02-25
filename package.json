@@ -19,6 +19,8 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^6.0.1",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "stripe": "^8.22.0",
+    "uuid": "^7.0.0"
   }
 }

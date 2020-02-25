@@ -3,12 +3,15 @@ const app = express();
 const bodyparser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const stripe = require("stripe")("sk_test_C2PTrKHpONvCrYTGFkBpAvB000Gc8oS54q");
+const uuid = require("uuid/v4");
 
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 app.use(cors());
+app.use(express.json());
 
 mongoose.connect("mongodb+srv://smart-shop-admin:password1234@smart-shop-db-drot2.mongodb.net/smart-shop-db?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -297,11 +300,43 @@ app.get("/:userid/orders", (req, res) => {
         }
     });
 });
+
+////////////////////////////////////////////////////////////////////
+//PAYMENT (STRIPE)
+
+app.post("/payment", (req, res) => {
+    const { product, token } = req.body;
+    console.log("Product ", product);
+    console.log("price ", product.price);
+    const idempontencykey = uuid();
+
+    return stripe.customers.create({
+            email: token.email,
+            source: token.id
+        }).then(customer => {
+            stripe.charges.create({
+                amount: product.price * 100,
+                currency: 'usd',
+                customer: customer.id,
+                receipt_email: token.email,
+                description: `purchase of ${product.name}`,
+                shipping: {
+                    name: token.card.name,
+                    address: {
+                        country: token.card.address_country
+                    }
+                }
+            }, { idempontencykey })
+        })
+        .then(result => res.status(200).json(result))
+        .catch(err => console.log(err))
+});
+
 ////////////////////////////////////////////////////////////////////
 //ALL IN ONE
 
 app.get("*", (req, res) => {
-    res.render("WRONG ROUTE IS BEING CALLED");
+    res.send("WRONG ROUTE IS BEING CALLED");
 });
 /////////////////////////////////////////////////////////////////////
 //CONNECTING ROUTES
