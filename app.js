@@ -339,6 +339,7 @@ app.post("/payment", (req, res) => {
     const idempontencykey = uuid();
     return stripe.customers.create({
             email: token.email,
+            amount: product.price * 100,
             source: token.id
         }).then(customer => {
             stripe.charges.create({
