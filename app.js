@@ -337,39 +337,27 @@ app.post("/payment", (req, res) => {
     console.log("Product ", product);
     console.log("price ", product.price);
     const idempontencykey = uuid();
-    let total = product.price;
-    stripe.charges.create({
-        amount: total,
-        source: req.body.stripeTokenId,
-        currency: 'usd'
-    }).then(function() {
-        console.log('Charge Successful')
-        res.json({ message: 'Successfully purchased items' })
-    }).catch(function() {
-        console.log('Charge Fail')
-        res.status(500).end()
-    })
-
-    // return stripe.customers.create({
-    //     email: token.email,
-    //     source: token.id
-    // }).then(customer => {
-    //     stripe.charges.create({
-    //         amount: product.price * 100,
-    //         currency: 'inr',
-    //         customer: customer.id,
-    //         receipt_email: token.email,
-    //         description: `purchase of ${product.name}`,
-    //         shipping: {
-    //             name: token.card.name,
-    //             address: {
-    //                 country: token.card.address_country
-    //             }
-    //         }
-    //     }, { idempontencykey })
-    // })
-    // .then(result => res.status(200).json(result))
-    // .catch(err => console.log(err))
+    return stripe.customers.create({
+            email: token.email,
+            source: token.id
+        }).then(customer => {
+            stripe.charges.create({
+                source: req.body.stripeTokenId,
+                amount: product.price * 100,
+                currency: 'inr',
+                customer: customer.id,
+                receipt_email: token.email,
+                description: `purchase of ${product.name}`,
+                shipping: {
+                    name: token.card.name,
+                    address: {
+                        country: token.card.address_country
+                    }
+                }
+            }, { idempontencykey })
+        })
+        .then(result => res.status(200).json(result))
+        .catch(err => console.log(err))
 });
 
 ////////////////////////////////////////////////////////////////////
