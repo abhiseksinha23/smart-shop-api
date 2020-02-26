@@ -303,33 +303,73 @@ app.get("/:userid/orders", (req, res) => {
 
 ////////////////////////////////////////////////////////////////////
 //PAYMENT (STRIPE)
+app.post('/purchase', function(req, res) {
+    fs.readFile('items.json', function(error, data) {
+        if (error) {
+            res.status(500).end()
+        } else {
+            const itemsJson = JSON.parse(data)
+            const itemsArray = itemsJson.music.concat(itemsJson.merch)
+            let total = 0
+            req.body.items.forEach(function(item) {
+                const itemJson = itemsArray.find(function(i) {
+                    return i.id == item.id
+                })
+                total = total + itemJson.price * item.quantity
+            })
 
+            stripe.charges.create({
+                amount: total,
+                source: req.body.stripeTokenId,
+                currency: 'usd'
+            }).then(function() {
+                console.log('Charge Successful')
+                res.json({ message: 'Successfully purchased items' })
+            }).catch(function() {
+                console.log('Charge Fail')
+                res.status(500).end()
+            })
+        }
+    })
+});
 app.post("/payment", (req, res) => {
     const { product, token } = req.body;
     console.log("Product ", product);
     console.log("price ", product.price);
     const idempontencykey = uuid();
+    let total = product.price;
+    stripe.charges.create({
+        amount: total,
+        source: req.body.stripeTokenId,
+        currency: 'usd'
+    }).then(function() {
+        console.log('Charge Successful')
+        res.json({ message: 'Successfully purchased items' })
+    }).catch(function() {
+        console.log('Charge Fail')
+        res.status(500).end()
+    })
 
-    return stripe.customers.create({
-            email: token.email,
-            source: token.id
-        }).then(customer => {
-            stripe.charges.create({
-                amount: product.price * 100,
-                currency: 'usd',
-                customer: customer.id,
-                receipt_email: token.email,
-                description: `purchase of ${product.name}`,
-                shipping: {
-                    name: token.card.name,
-                    address: {
-                        country: token.card.address_country
-                    }
-                }
-            }, { idempontencykey })
-        })
-        .then(result => res.status(200).json(result))
-        .catch(err => console.log(err))
+    // return stripe.customers.create({
+    //     email: token.email,
+    //     source: token.id
+    // }).then(customer => {
+    //     stripe.charges.create({
+    //         amount: product.price * 100,
+    //         currency: 'inr',
+    //         customer: customer.id,
+    //         receipt_email: token.email,
+    //         description: `purchase of ${product.name}`,
+    //         shipping: {
+    //             name: token.card.name,
+    //             address: {
+    //                 country: token.card.address_country
+    //             }
+    //         }
+    //     }, { idempontencykey })
+    // })
+    // .then(result => res.status(200).json(result))
+    // .catch(err => console.log(err))
 });
 
 ////////////////////////////////////////////////////////////////////
