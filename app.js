@@ -140,10 +140,10 @@ app.get("/:type/:category/:brand/products", (req, res) => {
 
 app.post("/user", (req, res) => {
     let userid = req.body.userId;
-    user.findOne({ userid: userid }, (err, user) => {
+    user.find({ userid: userid }, (err, user) => {
         if (err) {
-            res.status(500).json({ error: err })
             console.log(err);
+            res.status(500).json({ error: err })
         } else {
             if (!user) {
                 let message = "NO SUCH USER EXISTS";
