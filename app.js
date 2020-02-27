@@ -147,7 +147,7 @@ app.post("/user", (req, res) => {
         } else {
             if (!user) {
                 let message = "NO SUCH USER EXISTS";
-                res.status(200).json({ error: message });
+                res.status(200).json({ exists: false });
             }
             res.status(200).json({ data: user });
         }
