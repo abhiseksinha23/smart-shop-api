@@ -175,7 +175,10 @@ app.post("/createUser", (req, res) => {
     user.create(ur, (err, newly) => {
         if (err) {
             console.log(err);
-            res.status(500).json({ error: err.message });
+            // if (err.message === "E11000 duplicate key error collection: smart-shop-db.users index: userid_1 dup key: { userid: \"userid\" }") {
+
+            // }
+            res.status(500).json({ error: err.number });
         } else {
             res.status(200).json({ data: newly });
         }
