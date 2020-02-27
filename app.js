@@ -142,6 +142,10 @@ app.post("/user", (req, res) => {
     let userid = req.body.userId;
     user.find({ userid: userid }, (err, user) => {
         if (err) {
+            if (!user) {
+                let message = "NO SUCH USER EXISTS."
+                res.status(500).json({ error: message });
+            }
             res.status(500).json({ error: err })
             console.log(err);
         } else {
