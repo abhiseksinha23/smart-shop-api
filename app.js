@@ -175,13 +175,14 @@ app.post("/createUser", (req, res) => {
     user.create(ur, (err, newly) => {
         if (err) {
             console.log(err);
-            if (err.message === "E11000 duplicate key error collection: smart-shop-db.users index: userid_1 dup key: { userid: userid }") {
+            if (err.message === "E11000 duplicate key error collection: smart-shop-db.users index: userid_1 dup key: { userid: ${userid} }") {
                 let message = {
                     "err": "userid already exists"
-                }
+                };
                 res.status(500).json({ error: message });
             }
-            res.status(500).json({ error: err.message });
+            let message = "USERID ALREADY EXISTS";
+            res.status(500).json({ error: message });
         } else {
             res.status(200).json({ data: newly });
         }
