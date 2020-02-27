@@ -181,7 +181,7 @@ app.post("/createUser", (req, res) => {
                 let message = {
                     "err": "userid already exists"
                 };
-                res.status(500).json({ error: message });
+                return res.status(500).json({ error: message });
             }
             let message = "USERID or EMAIL ALREADY EXISTS";
             res.status(500).json({ error: message, error2: err.message });
