@@ -171,7 +171,7 @@ app.post("/createUser", (req, res) => {
     user.create(ur, (err, newly) => {
         if (err) {
             console.log(err);
-            res.status(500).json({ error: err });
+            res.status(500).json({ error: err.message });
         } else {
             res.status(200).json({ data: newly });
         }
@@ -303,39 +303,10 @@ app.get("/:userid/orders", (req, res) => {
 
 ////////////////////////////////////////////////////////////////////
 //PAYMENT (STRIPE)
-app.post('/purchase', function(req, res) {
-    fs.readFile('items.json', function(error, data) {
-        if (error) {
-            res.status(500).end()
-        } else {
-            const itemsJson = JSON.parse(data)
-            const itemsArray = itemsJson.music.concat(itemsJson.merch)
-            let total = 0
-            req.body.items.forEach(function(item) {
-                const itemJson = itemsArray.find(function(i) {
-                    return i.id == item.id
-                })
-                total = total + itemJson.price * item.quantity
-            })
-
-            stripe.charges.create({
-                amount: total,
-                source: req.body.stripeTokenId,
-                currency: 'usd'
-            }).then(function() {
-                console.log('Charge Successful')
-                res.json({ message: 'Successfully purchased items' })
-            }).catch(function() {
-                console.log('Charge Fail')
-                res.status(500).end()
-            })
-        }
-    })
-});
 app.post("/payment", (req, res) => {
-    const { product, token } = req.body;
-    console.log("Product ", product);
-    console.log("price ", product.price);
+    const { products, token } = req.body;
+    console.log("Product ", products);
+    console.log("price ", products.price);
     const idempontencykey = uuid();
     return stripe.customers.create({
             email: token.email,
@@ -343,11 +314,11 @@ app.post("/payment", (req, res) => {
         }).then(customer => {
             stripe.charges.create({
                 source: req.body.stripeTokenId,
-                amount: product.price * 100,
+                amount: products.price * 100,
                 currency: 'inr',
                 customer: customer.id,
                 receipt_email: token.email,
-                description: `purchase of ${product.name}`,
+                description: `purchase of ${products.name}`,
                 shipping: {
                     name: token.card.name,
                     address: {
