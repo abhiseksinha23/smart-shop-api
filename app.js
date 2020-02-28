@@ -174,21 +174,40 @@ app.post("/createUser", (req, res) => {
     let profilePicUrl = req.body.profilePicUrl;
 
     let ur = { name: name, email: email, userid: userid, profilePicUrl: profilePicUrl };
-    user.create(ur, (err, newly) => {
+    user.find({ userid: userid }, (err, us) => {
         if (err) {
-            console.log(err);
-            if (err.message === "E11000 duplicate key error collection: smart-shop-db.users index: userid_1 dup key: { userid: ${userid} }") {
-                let message = {
-                    "err": "userid already exists"
-                };
-                return res.status(500).json({ error: message });
-            }
-            let message = "USERID or EMAIL ALREADY EXISTS";
-            res.status(500).json({ error: message, error2: err.message });
+            res.status(500).json({ error: err.message });
         } else {
-            res.status(200).json({ data: newly });
+            if (us.length === 0) {
+                user.create(ur, (err, newly) => {
+                    if (err) {
+                        res.status(500).json({ error: err.message });
+                    } else {
+                        res.status(200).json({ data: newly });
+                        //res.redirect("")
+                    }
+                });
+            } else {
+                res.status(200).json({ data: us });
+            }
         }
-    })
+    });
+    // user.create(ur, (err, newly) => {
+    //     if (err) {
+    //         console.log(err);
+    //         if (err.message === "E11000 duplicate key error collection: smart-shop-db.users index: userid_1 dup key: { userid: ${userid} }") {
+    //             let message = {
+    //                 "err": "userid already exists"
+    //             };
+    //             return res.status(500).json({ error: message });
+    //         }
+    //         let message = "USERID or EMAIL ALREADY EXISTS";
+    //         res.status(500).json({ error: message, error2: err.message });
+    //     } else {
+    //         res.status(200).json({ data: newly });
+    //         //res.redirect("")
+    //     }
+    // })
 });
 
 ///////////////////////////////////////////////////////////
