@@ -188,7 +188,7 @@ app.post("/createUser", (req, res) => {
                     }
                 });
             } else {
-                res.status(200).json({ data: us });
+                res.status(200).json({ data: us[0] });
             }
         }
     });
@@ -236,6 +236,17 @@ app.post("/:userid/addtocart", (req, res) => {
     });
 });
 
+// app.get("/delete", (req, res) => {
+//     user.deleteMany({}, (err) => {
+//         if (err) {
+//             res.status(500).json({ error: err });
+//         } else {
+//             // res.status(200).json({ data: "deleted" });
+//             res.send("deleted");
+//         }
+
+//     })
+// });
 app.get("/:userid/cart", (req, res) => {
     let userid = req.params.userid;
     user.findOne({ userid: userid }, (err, us) => {
