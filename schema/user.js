@@ -10,7 +10,8 @@ const userSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "product"
         },
-        count: { type: Number, default: 0 }
+        count: { type: Number, default: 0 },
+        orderedAt: { type: Date, default: Date.now }
     }],
     cart: [{
         productRef: {
