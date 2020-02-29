@@ -14,11 +14,12 @@ const userSchema = new mongoose.Schema({
         orderedAt: { type: Date, default: Date.now }
     }],
     cart: [{
-        productRef: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "product"
-        },
-        count: { type: Number, default: 0 }
+        _id: String,
+        name: String,
+        brand: String,
+        price: Number,
+        image: String,
+        cartQuantity: { type: Number, default: 0 }
     }]
 });
 
