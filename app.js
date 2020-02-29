@@ -215,15 +215,17 @@ app.post("/createUser", (req, res) => {
 
 app.post("/:userid/addtocart", (req, res) => {
     let userid = req.params.userid;
-    let productRef = req.body.productRef;
-    let count = req.body.count;
-    let cr = { productRef: productRef, count: count };
+    //let productRef = req.body.productRef;
+    // let count = req.body.count;
+    // let cr = { productRef: productRef, count: count };
     user.findOne({ userid: userid }, (err, us) => {
         if (err) {
             console.log(err);
             res.status(500).json({ error: err });
         } else {
-            us.cart.push(cr);
+            // us.cart.push(cr);
+            us.cart = req.body.cartItems;
+            // us.cart.splice(0, us.cart.length, ...req.body.cartItems);
             us.save((err, u) => {
                 if (err) {
                     console.log(err);
