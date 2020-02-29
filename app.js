@@ -348,10 +348,18 @@ app.get("/:userid/orders", (req, res) => {
 
 ////////////////////////////////////////////////////////////////////
 //PAYMENT (STRIPE)
-app.post("/payment", (req, res) => {
-    const { products, token } = req.body;
-    console.log("Product ", products);
-    console.log("price ", products.price);
+app.post("/:userid/payment", (req, res) => {
+    const token = req.body.token;
+    const products = req.body.products;
+    let product_name = "";
+    let totalprice = 0;
+    products.forEach((prod) => {
+        product_name += prod.name + " ";
+        totalprice += (prod.cartQuantity * prod.price);
+    });
+    // const totalprice = req.body.totalPrice;
+    console.log("Product ", products_name);
+    console.log("price ", totalprice);
     const idempontencykey = uuid();
     return stripe.customers.create({
             email: token.email,
@@ -359,11 +367,11 @@ app.post("/payment", (req, res) => {
         }).then(customer => {
             stripe.charges.create({
                 source: req.body.stripeTokenId,
-                amount: products.price * 100,
+                amount: totalprice,
                 currency: 'inr',
                 customer: customer.id,
                 receipt_email: token.email,
-                description: `purchase of ${products.name}`,
+                description: `purchase of ${product_name}`,
                 shipping: {
                     name: token.card.name,
                     address: {
@@ -372,7 +380,29 @@ app.post("/payment", (req, res) => {
                 }
             }, { idempontencykey })
         })
-        .then(result => res.status(200).json(result))
+        .then((result) => {
+            let userid = req.params.userid;
+            products.forEach((prod) => {
+                let cr = { productRef: prod._id, count: prod.cartQuantity };
+                user.findOne({ userid: userid }, (err, us) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).json({ error: err });
+                    } else {
+                        us.products.push(cr);
+                        us.save((err, u) => {
+                            if (err) {
+                                res.status(500).json({ error: err });
+                            } else {
+                                console.log(u);
+                            }
+                        });
+                        // res.status(200).json({ data: us });
+                    }
+                });
+            });
+            res.status(200).json(result);
+        })
         .catch(err => console.log(err))
 });
 
