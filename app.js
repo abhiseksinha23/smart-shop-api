@@ -377,7 +377,7 @@ app.post("/:userid/payment", (req, res) => {
             }, { idempontencykey })
         })
         .then(result => {
-            user.find({ userid: req.params.userid }, (err, us) => {
+            user.findOne({ userid: req.params.userid }, (err, us) => {
                 if (err) {
                     return res.status(500).json({ error: err });
                 } else {
