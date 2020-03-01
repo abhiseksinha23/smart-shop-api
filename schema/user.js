@@ -6,11 +6,17 @@ const userSchema = new mongoose.Schema({
     email: { type: String, unique: true, required: true },
     profilePicUrl: { type: String, default: "https://image.flaticon.com/icons/svg/145/145848.svg" },
     products: [{
-        productRef: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "product"
-        },
-        count: { type: Number, default: 0 },
+        _id: String,
+        name: String,
+        brand: String,
+        price: Number,
+        image: String,
+        cartQuantity: { type: Number, default: 0 },
+        // productRef: {
+        //     type: mongoose.Schema.Types.ObjectId,
+        //     ref: "product"
+        // },
+        // count: { type: Number, default: 0 },
         orderedAt: { type: Date, default: Date.now }
     }],
     cart: [{

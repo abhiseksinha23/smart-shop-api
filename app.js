@@ -376,7 +376,26 @@ app.post("/:userid/payment", (req, res) => {
                 }
             }, { idempontencykey })
         })
-        .then(result => res.status(200).json({ result, products }))
+        .then(result => {
+            user.find({ userid: req.params.userid }, (err, us) => {
+                if (err) {
+                    return res.status(500).json({ error: err });
+                } else {
+                    products.forEach((pr) => {
+                        us.cart.push(pr);
+                    });
+                    us.save((err, u) => {
+                        if (err) {
+                            return res.status(500).json({ error: err });
+                        } else {
+                            console.log(u);
+                            return res.status(200).json({ result, products });
+                        }
+                    });
+                }
+            });
+            res.status(200).json({ result, products })
+        })
         .catch(err => console.log(err))
 });
 // app.post("/:userid/payment", (req, res) => {
