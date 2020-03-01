@@ -381,26 +381,26 @@ app.post("/:userid/payment", (req, res) => {
             }, { idempontencykey })
         })
         .then((result) => {
-            let userid = req.params.userid;
-            products.forEach((prod) => {
-                let cr = { productRef: prod._id, count: prod.cartQuantity };
-                user.findOne({ userid: userid }, (err, us) => {
-                    if (err) {
-                        console.log(err);
-                        res.status(500).json({ error: err });
-                    } else {
-                        us.products.push(cr);
-                        us.save((err, u) => {
-                            if (err) {
-                                res.status(500).json({ error: err });
-                            } else {
-                                console.log(u);
-                            }
-                        });
-                        // res.status(200).json({ data: us });
-                    }
-                });
-            });
+            // let userid = req.params.userid;
+            // products.forEach((prod) => {
+            //     let cr = { productRef: prod._id, count: prod.cartQuantity };
+            //     user.findOne({ userid: userid }, (err, us) => {
+            //         if (err) {
+            //             console.log(err);
+            //             res.status(500).json({ error: err });
+            //         } else {
+            //             us.products.push(cr);
+            //             us.save((err, u) => {
+            //                 if (err) {
+            //                     res.status(500).json({ error: err });
+            //                 } else {
+            //                     console.log(u);
+            //                 }
+            //             });
+            //             // res.status(200).json({ data: us });
+            //         }
+            //     });
+            // });
             res.status(200).json(result);
         })
         .catch(err => console.log(err))
