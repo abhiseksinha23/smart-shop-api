@@ -381,27 +381,21 @@ app.post("/:userid/payment", (req, res) => {
             }, { idempontencykey })
         })
         .then((result) => {
-            let userid = req.params.userid;
-            user.findOne({ userid: userid }, (errr, us) => {
-                if (errr) {
-                    console.log(errr);
-                    res.status(500).json({ error: "user not found" });
-                } else {
-                    products.forEach((prod) => {
-                        let cr = { productRef: prod._id, count: prod.cartQuantity };
-                        us.products.push(cr);
-                        us.save((err, u) => {
-                            if (err) {
-                                res.status(500).json({ error: "error 232322" });
-                            } else {
-                                console.log(u);
-                            }
-                        });
-                    });
-                    // res.status(200).json({ data: us });
-                    res.status(200).json(result);
-                }
-            });
+            res.status(200).json(result);
+            // let userid = req.params.userid;
+            // user.findOne({ userid: userid }, (errr, us) => {
+            //     if (errr) {
+            //         console.log(errr);
+            //         res.status(500).json({ error: "user not found" });
+            //     } else {
+            //         products.forEach((prod) => {
+            //             let cr = { productRef: prod._id, count: prod.cartQuantity };
+            //             us.products.push(cr);
+            //         });
+            //         // res.status(200).json({ data: us });
+            //         res.status(200).json(result);
+            //     }
+            // });
         })
         .catch(err => console.log(err))
 });
