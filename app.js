@@ -325,13 +325,13 @@ app.get("/:userid/orders", (req, res) => {
             } else {
                 products.forEach(function(p, i) {
 
-                    product.findById(p.productRef, (err, pr) => {
+                    product.findById(p._id, (err, pr) => {
                         if (err) {
                             res.status(500).json({ error: err });
                         } else {
                             productsInOrder.push({
-                                prod: pr,
-                                orderCount: p.count,
+                                ...pr._doc,
+                                orderCount: p.cartQuantity,
                             });
 
                             if (productsInOrder.length === products.length) {
