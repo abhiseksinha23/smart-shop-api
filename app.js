@@ -379,7 +379,7 @@ app.post("/:userid/payment", (req, res) => {
         .then(result => {
             user.findOne({ userid: req.params.userid }, (err, us) => {
                 if (err) {
-                    return res.status(500).json({ error: err });
+                    res.status(500).json({ error: err });
                 } else {
                     products.forEach((pr) => {
                         // us.products.push(pr);
@@ -394,10 +394,10 @@ app.post("/:userid/payment", (req, res) => {
                     //         return res.status(200).json({ result: result, products, message: message });
                     //     }
                     // });
-                    return res.status(200).json({ result: result, products, message: us });
+                    res.status(200).json({ result: result, products, message: us });
                 }
             });
-            res.status(200).json({ result, products })
+            // res.status(200).json({ result, products })
         })
         .catch(err => console.log(err))
 });
