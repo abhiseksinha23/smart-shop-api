@@ -334,7 +334,16 @@ app.get("/:userid/orders", (req, res) => {
                                 orderCount: p.cartQuantity,
                                 orderedAt: p.orderedAt
                             });
-
+                            productsInOrder.sort((prod1, prod2) => {
+                                if (new Date(prod1.orderedAt) > new Date(prod2.orderedAt)) {
+                                    return -1;
+                                } else if (new Date(prod1.orderedAt) < new Date(prod2.orderedAt)) {
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+                            });
+                            //productsInOrder.reverse();
                             if (productsInOrder.length === products.length) {
                                 res.status(200).json({ data: productsInOrder });
                             }

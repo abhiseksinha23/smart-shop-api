@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
         // },
         // count: { type: Number, default: 0 },
         orderedAt: { type: Date, default: Date.now }
-    }],
+    }, { $sort: { orderedAt: -1 } }],
     cart: [{
         _id: String,
         name: String,
