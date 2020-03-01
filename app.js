@@ -382,17 +382,19 @@ app.post("/:userid/payment", (req, res) => {
                     return res.status(500).json({ error: err });
                 } else {
                     products.forEach((pr) => {
-                        us.products.push(pr);
+                        // us.products.push(pr);
+                        console.log(pr);
                     });
-                    us.save((err, u) => {
-                        if (err) {
-                            return res.status(500).json({ error: err });
-                        } else {
-                            console.log(u);
-                            let message = "hii";
-                            return res.status(200).json({ result: result, products, message: message });
-                        }
-                    });
+                    // us.save((err, u) => {
+                    //     if (err) {
+                    //         return res.status(500).json({ error: err });
+                    //     } else {
+                    //         console.log(u);
+                    //         let message = "hii";
+                    //         return res.status(200).json({ result: result, products, message: message });
+                    //     }
+                    // });
+                    return res.status(200).json({ result: result, products, message: us });
                 }
             });
             res.status(200).json({ result, products })
