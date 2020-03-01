@@ -349,7 +349,7 @@ app.get("/:userid/orders", (req, res) => {
 ////////////////////////////////////////////////////////////////////
 //PAYMENT (STRIPE)
 
-app.post("/payment", (req, res) => {
+app.post("/:userid/payment", (req, res) => {
     const token = req.body.token;
     const totalPrice = req.body.totalPrice;
     // console.log("Product ", product);
@@ -377,63 +377,63 @@ app.post("/payment", (req, res) => {
         .then(result => res.status(200).json(result))
         .catch(err => console.log(err))
 });
-app.post("/:userid/payment", (req, res) => {
-    const token = req.body.token;
-    const products = req.body.products;
-    //let product_name = "";
-    let totalprice = req.body.totalPrice;
-    // products.forEach((prod) => {
-    //     product_name += prod.name + " ";
-    //     // totalprice += (prod.cartQuantity * prod.price);
-    // });
-    // const totalprice = req.body.totalPrice;
-    console.log("Product ", products_name);
-    console.log("price ", totalprice);
-    const idempontencykey = uuid();
-    return stripe.customers.create({
-            email: token.email,
-            source: token.id
-        }).then(customer => {
-            stripe.charges.create({
-                source: req.body.stripeTokenId,
-                amount: totalprice,
-                currency: 'inr',
-                customer: customer.id,
-                receipt_email: token.email,
-                //description: `purchase of ${product_name}`,
-                shipping: {
-                    name: token.card.name,
-                    address: {
-                        country: token.card.address_country
-                    }
-                }
-            }, { idempontencykey })
-        })
-        .then((result) => {
-            // let userid = req.params.userid;
-            // products.forEach((prod) => {
-            //     let cr = { productRef: prod._id, count: prod.cartQuantity };
-            //     user.findOne({ userid: userid }, (err, us) => {
-            //         if (err) {
-            //             console.log(err);
-            //             res.status(500).json({ error: err });
-            //         } else {
-            //             us.products.push(cr);
-            //             us.save((err, u) => {
-            //                 if (err) {
-            //                     res.status(500).json({ error: err });
-            //                 } else {
-            //                     console.log(u);
-            //                 }
-            //             });
-            //             // res.status(200).json({ data: us });
-            //         }
-            //     });
-            // });
-            res.status(200).json(result);
-        })
-        .catch(err => console.log(err))
-});
+// app.post("/:userid/payment", (req, res) => {
+//     const token = req.body.token;
+//     const products = req.body.products;
+//     //let product_name = "";
+//     let totalprice = req.body.totalPrice;
+//     // products.forEach((prod) => {
+//     //     product_name += prod.name + " ";
+//     //     // totalprice += (prod.cartQuantity * prod.price);
+//     // });
+//     // const totalprice = req.body.totalPrice;
+//     console.log("Product ", products_name);
+//     console.log("price ", totalprice);
+//     const idempontencykey = uuid();
+//     return stripe.customers.create({
+//             email: token.email,
+//             source: token.id
+//         }).then(customer => {
+//             stripe.charges.create({
+//                 source: req.body.stripeTokenId,
+//                 amount: totalprice,
+//                 currency: 'inr',
+//                 customer: customer.id,
+//                 receipt_email: token.email,
+//                 //description: `purchase of ${product_name}`,
+//                 shipping: {
+//                     name: token.card.name,
+//                     address: {
+//                         country: token.card.address_country
+//                     }
+//                 }
+//             }, { idempontencykey })
+//         })
+//         .then((result) => {
+//             // let userid = req.params.userid;
+//             // products.forEach((prod) => {
+//             //     let cr = { productRef: prod._id, count: prod.cartQuantity };
+//             //     user.findOne({ userid: userid }, (err, us) => {
+//             //         if (err) {
+//             //             console.log(err);
+//             //             res.status(500).json({ error: err });
+//             //         } else {
+//             //             us.products.push(cr);
+//             //             us.save((err, u) => {
+//             //                 if (err) {
+//             //                     res.status(500).json({ error: err });
+//             //                 } else {
+//             //                     console.log(u);
+//             //                 }
+//             //             });
+//             //             // res.status(200).json({ data: us });
+//             //         }
+//             //     });
+//             // });
+//             res.status(200).json(result);
+//         })
+//         .catch(err => console.log(err))
+// });
 
 ////////////////////////////////////////////////////////////////////
 //ALL IN ONE
