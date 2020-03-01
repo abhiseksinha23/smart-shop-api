@@ -382,13 +382,13 @@ app.post("/:userid/payment", (req, res) => {
         })
         .then((result) => {
             let userid = req.params.userid;
-            products.forEach((prod) => {
-                let cr = { productRef: prod._id, count: prod.cartQuantity };
-                user.findOne({ userid: userid }, (err, us) => {
-                    if (err) {
-                        console.log(err);
-                        res.status(500).json({ error: err });
-                    } else {
+            user.findOne({ userid: userid }, (err, us) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).json({ error: err });
+                } else {
+                    products.forEach((prod) => {
+                        let cr = { productRef: prod._id, count: prod.cartQuantity };
                         us.products.push(cr);
                         us.save((err, u) => {
                             if (err) {
@@ -397,9 +397,9 @@ app.post("/:userid/payment", (req, res) => {
                                 console.log(u);
                             }
                         });
-                        // res.status(200).json({ data: us });
-                    }
-                });
+                    });
+                    // res.status(200).json({ data: us });
+                }
             });
             res.status(200).json(result);
         })
