@@ -352,6 +352,8 @@ app.get("/:userid/orders", (req, res) => {
 app.post("/:userid/payment", (req, res) => {
     const token = req.body.token;
     const totalPrice = req.body.totalPrice;
+    const products = req.body.products;
+    // products.forEach()
     // console.log("Product ", product);
     // console.log("price ", product.price);
     const idempontencykey = uuid();
@@ -374,7 +376,7 @@ app.post("/:userid/payment", (req, res) => {
                 }
             }, { idempontencykey })
         })
-        .then(result => res.status(200).json(result))
+        .then(result => res.status(200).json({ result, products }))
         .catch(err => console.log(err))
 });
 // app.post("/:userid/payment", (req, res) => {
