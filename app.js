@@ -382,7 +382,7 @@ app.post("/:userid/payment", (req, res) => {
                     return res.status(500).json({ error: err });
                 } else {
                     products.forEach((pr) => {
-                        us.cart.push(pr);
+                        us.products.push(pr);
                     });
                     us.save((err, u) => {
                         if (err) {
