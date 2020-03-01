@@ -351,12 +351,12 @@ app.get("/:userid/orders", (req, res) => {
 app.post("/:userid/payment", (req, res) => {
     const token = req.body.token;
     const products = req.body.products;
-    let product_name = "";
-    let totalprice = 0;
-    products.forEach((prod) => {
-        product_name += prod.name + " ";
-        totalprice += (prod.cartQuantity * prod.price);
-    });
+    //let product_name = "";
+    let totalprice = req.body.totalPrice;
+    // products.forEach((prod) => {
+    //     product_name += prod.name + " ";
+    //     // totalprice += (prod.cartQuantity * prod.price);
+    // });
     // const totalprice = req.body.totalPrice;
     console.log("Product ", products_name);
     console.log("price ", totalprice);
@@ -371,7 +371,7 @@ app.post("/:userid/payment", (req, res) => {
                 currency: 'inr',
                 customer: customer.id,
                 receipt_email: token.email,
-                description: `purchase of ${product_name}`,
+                //description: `purchase of ${product_name}`,
                 shipping: {
                     name: token.card.name,
                     address: {
@@ -381,21 +381,27 @@ app.post("/:userid/payment", (req, res) => {
             }, { idempontencykey })
         })
         .then((result) => {
+            let userid = req.params.userid;
+            products.forEach((prod) => {
+                let cr = { productRef: prod._id, count: prod.cartQuantity };
+                user.findOne({ userid: userid }, (err, us) => {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).json({ error: err });
+                    } else {
+                        us.products.push(cr);
+                        us.save((err, u) => {
+                            if (err) {
+                                res.status(500).json({ error: err });
+                            } else {
+                                console.log(u);
+                            }
+                        });
+                        // res.status(200).json({ data: us });
+                    }
+                });
+            });
             res.status(200).json(result);
-            // let userid = req.params.userid;
-            // user.findOne({ userid: userid }, (errr, us) => {
-            //     if (errr) {
-            //         console.log(errr);
-            //         res.status(500).json({ error: "user not found" });
-            //     } else {
-            //         products.forEach((prod) => {
-            //             let cr = { productRef: prod._id, count: prod.cartQuantity };
-            //             us.products.push(cr);
-            //         });
-            //         // res.status(200).json({ data: us });
-            //         res.status(200).json(result);
-            //     }
-            // });
         })
         .catch(err => console.log(err))
 });
