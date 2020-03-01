@@ -360,14 +360,14 @@ app.post("/:userid/payment", (req, res) => {
     // const totalprice = req.body.totalPrice;
     console.log("Product ", products_name);
     console.log("price ", totalprice);
-    const idempontencykey = uuid();
+    // const idempontencykey = uuid();
     return stripe.customers.create({
             email: token.email,
             source: token.id
         }).then(customer => {
             stripe.charges.create({
                 source: req.body.stripeTokenId,
-                amount: totalprice,
+                amount: totalprice * 100,
                 currency: 'inr',
                 customer: customer.id,
                 receipt_email: token.email,
@@ -378,7 +378,7 @@ app.post("/:userid/payment", (req, res) => {
                         country: token.card.address_country
                     }
                 }
-            }, { idempontencykey })
+            })
         })
         .then((result) => {
             // let userid = req.params.userid;
