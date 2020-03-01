@@ -385,23 +385,23 @@ app.post("/:userid/payment", (req, res) => {
             user.findOne({ userid: userid }, (err, us) => {
                 if (err) {
                     console.log(err);
-                    res.status(500).json({ error: err });
+                    res.status(500).json({ error: "user not found" });
                 } else {
                     products.forEach((prod) => {
                         let cr = { productRef: prod._id, count: prod.cartQuantity };
                         us.products.push(cr);
                         us.save((err, u) => {
                             if (err) {
-                                res.status(500).json({ error: err });
+                                res.status(500).json({ error: err.message });
                             } else {
                                 console.log(u);
                             }
                         });
                     });
                     // res.status(200).json({ data: us });
+                    res.status(200).json(result);
                 }
             });
-            res.status(200).json(result);
         })
         .catch(err => console.log(err))
 });
