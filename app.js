@@ -348,6 +348,35 @@ app.get("/:userid/orders", (req, res) => {
 
 ////////////////////////////////////////////////////////////////////
 //PAYMENT (STRIPE)
+
+app.post("/payment", (req, res) => {
+    const token = req.body.token;
+    const totalPrice = req.body.totalPrice;
+    // console.log("Product ", product);
+    // console.log("price ", product.price);
+    const idempontencykey = uuid();
+
+    return stripe.customers.create({
+            email: token.email,
+            source: token.id
+        }).then(customer => {
+            stripe.charges.create({
+                amount: totalPrice * 100,
+                currency: 'inr',
+                customer: customer.id,
+                receipt_email: token.email,
+                //description: `purchase of ${product.name}`,
+                shipping: {
+                    name: token.card.name,
+                    address: {
+                        country: token.card.address_country
+                    }
+                }
+            }, { idempontencykey })
+        })
+        .then(result => res.status(200).json(result))
+        .catch(err => console.log(err))
+});
 app.post("/:userid/payment", (req, res) => {
     const token = req.body.token;
     const products = req.body.products;
@@ -360,14 +389,14 @@ app.post("/:userid/payment", (req, res) => {
     // const totalprice = req.body.totalPrice;
     console.log("Product ", products_name);
     console.log("price ", totalprice);
-    // const idempontencykey = uuid();
+    const idempontencykey = uuid();
     return stripe.customers.create({
             email: token.email,
             source: token.id
         }).then(customer => {
             stripe.charges.create({
                 source: req.body.stripeTokenId,
-                amount: totalprice * 100,
+                amount: totalprice,
                 currency: 'inr',
                 customer: customer.id,
                 receipt_email: token.email,
@@ -378,7 +407,7 @@ app.post("/:userid/payment", (req, res) => {
                         country: token.card.address_country
                     }
                 }
-            })
+            }, { idempontencykey })
         })
         .then((result) => {
             // let userid = req.params.userid;
