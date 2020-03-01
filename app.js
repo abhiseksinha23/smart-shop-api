@@ -332,6 +332,7 @@ app.get("/:userid/orders", (req, res) => {
                             productsInOrder.push({
                                 ...pr._doc,
                                 orderCount: p.cartQuantity,
+                                orderedAt: p.orderedAt
                             });
 
                             if (productsInOrder.length === products.length) {
