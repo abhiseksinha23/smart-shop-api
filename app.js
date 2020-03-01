@@ -382,9 +382,9 @@ app.post("/:userid/payment", (req, res) => {
         })
         .then((result) => {
             let userid = req.params.userid;
-            user.findOne({ userid: userid }, (err, us) => {
-                if (err) {
-                    console.log(err);
+            user.findOne({ userid: userid }, (errr, us) => {
+                if (errr) {
+                    console.log(errr);
                     res.status(500).json({ error: "user not found" });
                 } else {
                     products.forEach((prod) => {
@@ -392,7 +392,7 @@ app.post("/:userid/payment", (req, res) => {
                         us.products.push(cr);
                         us.save((err, u) => {
                             if (err) {
-                                res.status(500).json({ error: err.message });
+                                res.status(500).json({ error: "error 232322" });
                             } else {
                                 console.log(u);
                             }
