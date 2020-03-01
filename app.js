@@ -389,7 +389,8 @@ app.post("/:userid/payment", (req, res) => {
                             return res.status(500).json({ error: err });
                         } else {
                             console.log(u);
-                            return res.status(200).json({ result, products });
+                            let message = "hii";
+                            return res.status(200).json({ result: result, products, message: message });
                         }
                     });
                 }
