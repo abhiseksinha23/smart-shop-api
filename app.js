@@ -135,6 +135,18 @@ app.get("/:type/:category/:brand/products", (req, res) => {
 
 });
 
+// app.get("/delete", (req, res) => {
+//     user.deleteMany({}, (err) => {
+//         if (err) {
+//             res.status(500).json({ error: err });
+//         } else {
+//             // res.status(200).json({ data: "deleted" });
+//             res.send("deleted");
+//         }
+
+//     })
+// });
+
 /////////////////////////////////////////////////////////////////////////////
 //USER ROUTES
 
@@ -192,22 +204,6 @@ app.post("/createUser", (req, res) => {
             }
         }
     });
-    // user.create(ur, (err, newly) => {
-    //     if (err) {
-    //         console.log(err);
-    //         if (err.message === "E11000 duplicate key error collection: smart-shop-db.users index: userid_1 dup key: { userid: ${userid} }") {
-    //             let message = {
-    //                 "err": "userid already exists"
-    //             };
-    //             return res.status(500).json({ error: message });
-    //         }
-    //         let message = "USERID or EMAIL ALREADY EXISTS";
-    //         res.status(500).json({ error: message, error2: err.message });
-    //     } else {
-    //         res.status(200).json({ data: newly });
-    //         //res.redirect("")
-    //     }
-    // })
 });
 
 ///////////////////////////////////////////////////////////
@@ -215,17 +211,13 @@ app.post("/createUser", (req, res) => {
 
 app.post("/:userid/addtocart", (req, res) => {
     let userid = req.params.userid;
-    //let productRef = req.body.productRef;
-    // let count = req.body.count;
-    // let cr = { productRef: productRef, count: count };
+
     user.findOne({ userid: userid }, (err, us) => {
         if (err) {
             console.log(err);
             res.status(500).json({ error: err });
         } else {
-            // us.cart.push(cr);
             us.cart = req.body.cartItems;
-            // us.cart.splice(0, us.cart.length, ...req.body.cartItems);
             us.save((err, u) => {
                 if (err) {
                     console.log(err);
@@ -238,17 +230,7 @@ app.post("/:userid/addtocart", (req, res) => {
     });
 });
 
-// app.get("/delete", (req, res) => {
-//     user.deleteMany({}, (err) => {
-//         if (err) {
-//             res.status(500).json({ error: err });
-//         } else {
-//             // res.status(200).json({ data: "deleted" });
-//             res.send("deleted");
-//         }
 
-//     })
-// });
 app.get("/:userid/cart", (req, res) => {
     let userid = req.params.userid;
     user.findOne({ userid: userid }, (err, us) => {
@@ -308,7 +290,7 @@ app.post("/:userid/order", (req, res) => {
         }
     });
 });
-//changes
+
 
 
 app.get("/:userid/orders", (req, res) => {
@@ -343,7 +325,6 @@ app.get("/:userid/orders", (req, res) => {
                                     return 0;
                                 }
                             });
-                            //productsInOrder.reverse();
                             if (productsInOrder.length === products.length) {
                                 res.status(200).json({ data: productsInOrder });
                             }
@@ -363,9 +344,7 @@ app.post("/:userid/payment", (req, res) => {
     const token = req.body.token;
     const totalPrice = req.body.totalPrice;
     const products = req.body.products;
-    // products.forEach()
-    // console.log("Product ", product);
-    // console.log("price ", product.price);
+
     const idempontencykey = uuid();
 
     return stripe.customers.create({
@@ -377,7 +356,7 @@ app.post("/:userid/payment", (req, res) => {
                 currency: 'inr',
                 customer: customer.id,
                 receipt_email: token.email,
-                //description: `purchase of ${product.name}`,
+                description: `purchase of ${product.name}`,
                 shipping: {
                     name: token.card.name,
                     address: {
@@ -404,70 +383,13 @@ app.post("/:userid/payment", (req, res) => {
                             res.status(200).json({ result: result, products, message: us });
                         }
                     });
-                    //res.status(200).json({ result: result, products, message: us });
                 }
             });
-            // res.status(200).json({ result, products })
+
         })
         .catch(err => console.log(err))
 });
-// app.post("/:userid/payment", (req, res) => {
-//     const token = req.body.token;
-//     const products = req.body.products;
-//     //let product_name = "";
-//     let totalprice = req.body.totalPrice;
-//     // products.forEach((prod) => {
-//     //     product_name += prod.name + " ";
-//     //     // totalprice += (prod.cartQuantity * prod.price);
-//     // });
-//     // const totalprice = req.body.totalPrice;
-//     console.log("Product ", products_name);
-//     console.log("price ", totalprice);
-//     const idempontencykey = uuid();
-//     return stripe.customers.create({
-//             email: token.email,
-//             source: token.id
-//         }).then(customer => {
-//             stripe.charges.create({
-//                 source: req.body.stripeTokenId,
-//                 amount: totalprice,
-//                 currency: 'inr',
-//                 customer: customer.id,
-//                 receipt_email: token.email,
-//                 //description: `purchase of ${product_name}`,
-//                 shipping: {
-//                     name: token.card.name,
-//                     address: {
-//                         country: token.card.address_country
-//                     }
-//                 }
-//             }, { idempontencykey })
-//         })
-//         .then((result) => {
-//             // let userid = req.params.userid;
-//             // products.forEach((prod) => {
-//             //     let cr = { productRef: prod._id, count: prod.cartQuantity };
-//             //     user.findOne({ userid: userid }, (err, us) => {
-//             //         if (err) {
-//             //             console.log(err);
-//             //             res.status(500).json({ error: err });
-//             //         } else {
-//             //             us.products.push(cr);
-//             //             us.save((err, u) => {
-//             //                 if (err) {
-//             //                     res.status(500).json({ error: err });
-//             //                 } else {
-//             //                     console.log(u);
-//             //                 }
-//             //             });
-//             //             // res.status(200).json({ data: us });
-//             //         }
-//             //     });
-//             // });
-//             res.status(200).json(result);
-//         })
-//         .catch(err => console.log(err))
-// });
+
 
 ////////////////////////////////////////////////////////////////////
 //ALL IN ONE

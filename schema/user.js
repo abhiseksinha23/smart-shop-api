@@ -12,11 +12,6 @@ const userSchema = new mongoose.Schema({
         price: Number,
         image: String,
         cartQuantity: { type: Number, default: 0 },
-        // productRef: {
-        //     type: mongoose.Schema.Types.ObjectId,
-        //     ref: "product"
-        // },
-        // count: { type: Number, default: 0 },
         orderedAt: { type: Date, default: Date.now }
     }, { $sort: { orderedAt: -1 } }],
     cart: [{
