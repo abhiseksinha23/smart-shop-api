@@ -5,7 +5,16 @@ Link - https://smartkart.netlify.app   (Live)
 Backend API for the project. Using Nodejs and MongoDB along with stripe payment api.
 
 
+
+
+
+
+
+
 Basic description of the complete project-
+
+
+
 A conversational E-commerce website providing personal assistance(Eve) to each user to have a conversation and get the desired product.
 Along with adding items into the cart aur directly buy a single product along with making payments using debit/credit cards.
 Login using Google or facebook account using Firebase.
