@@ -4,7 +4,8 @@ Link - https://smartkart.netlify.app   (Live)
 
 Backend API for the project. Using Nodejs and MongoDB along with stripe payment api.
 
-
+Frontent at-  https://github.com/AdityaPratap006/smart-shop
+For Admin excess-  https://github.com/uditkr27/chat-app
 
 
 
