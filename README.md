@@ -7,7 +7,7 @@ Backend API for the project. Using Nodejs and MongoDB along with stripe payment 
 Frontend at-  https://github.com/AdityaPratap006/smart-shop
 
 
-For Admin excess-  https://github.com/uditkr27/chat-app
+For Admin access-  https://github.com/uditkr27/chat-app
 
 
 
